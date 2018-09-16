@@ -41,13 +41,13 @@
     state: directory
     mode: 0755
 
-#- name: Download phpbrew
-#  become: yes
-#  get_url:
-#    url: https://github.com/phpbrew/phpbrew/raw/master/phpbrew
-#    dest: /usr/local/bin/phpbrew
-#    mode: 0755
-#    force: no
+- name: Download phpbrew
+  become: yes
+  get_url:
+    url: https://github.com/phpbrew/phpbrew/raw/master/phpbrew
+    dest: /usr/local/bin/phpbrew
+    mode: 0755
+    force: no
 
 - name: Init phpbrew
   become: yes
