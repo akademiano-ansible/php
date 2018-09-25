@@ -7,10 +7,17 @@
     name: phpbrew-fpm
     state: reloaded
 
-- name: nginx reload
+- name: php restart
+  become: yes
+  service:
+    name: phpbrew-fpm
+    state: restarted
+
+
+- name: nginx restart
   become: yes
   service:
     name: nginx
-    state: reloaded
+    state: restarted
   ignore_errors: true
 

@@ -47,7 +47,7 @@
     owner: root
     group: root
     mode: 0644
-  notify: php reload
+  notify: php restart
 
 - name: Update php-www config
   become: yes
@@ -57,7 +57,7 @@
     owner: root
     group: root
     mode: 0644
-  notify: php reload
+  notify: php restart
 
 - name: Update php.ini config
   become: yes
@@ -89,7 +89,7 @@
   args:
     executable: /bin/bash
     creates: /lib/systemd/system/phpbrew-fpm.service
-  notify: php reload  
+  notify: php restart
   register: systemd_php_unit
 
 - systemd: 
@@ -112,6 +112,6 @@
     owner: root
     group: root
     mode: 0644
-  notify: nginx reload
+  notify: nginx restart
  
 
