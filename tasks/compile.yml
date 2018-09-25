@@ -1,0 +1,63 @@
+- name: create opt phpbrew dir
+  become: yes
+  file:
+    path: /opt/phpbrew
+    state: directory
+    mode: 0755
+
+- name: Download phpbrew
+  become: yes
+  get_url:
+    url: https://github.com/phpbrew/phpbrew/raw/master/phpbrew
+    dest: /usr/local/bin/phpbrew
+    mode: 0755
+    force: no
+
+- name: Init phpbrew
+  become: yes
+  shell: PHPBREW_HOME=/opt/phpbrew PHPBREW_ROOT=/opt/phpbrew  /usr/local/bin/phpbrew init
+  args:
+    executable: /bin/bash
+    creates: /opt/phpbrew/bashrc
+    chdir: /opt/phpbrew/
+
+- name: configure phpbrew paths
+  become: yes
+  blockinfile:
+    path: /opt/phpbrew/bashrc
+    insertafter: "# PHPBREW_PATH: the bin path of the current php."
+    content: |
+      export PHPBREW_HOME="/opt/phpbrew"
+      export PHPBREW_ROOT="/opt/phpbrew"
+
+- name: addphpbrew to profile
+  become: yes
+  copy:
+    dest: /etc/profile.d/z999-1-phpbrew.sh
+    content: '. /opt/phpbrew/bashrc'
+    mode: 0755
+
+- name: Get latest known php version
+  become: yes
+  shell: "source /etc/profile && phpbrew known | grep {{php_version_minor}} | awk '{print $2}' | rev | cut -c 2- | rev"
+  args:
+    executable: /bin/bash
+  register: phpbrew_known_result
+  changed_when: False
+  always_run: yes
+
+- set_fact:
+    php_version_latest: "{{phpbrew_known_result.stdout}}"
+
+- name: Install php
+  become: yes
+  shell: "source /etc/profile && export CCACHE_DIR=$(realpath ~/.ccache) && export PATH=/usr/lib/ccache:$PATH &&  phpbrew install php-{{php_version_latest}} +default +fpm +dbs +exif +imap +curl +gd +intl +gettext +iconv +opcache +xmlrpc -- --with-fpm-systemd --with-ldap  --with-ldap-sasl  --with-gd --with-jpeg-dir  --with-png-dir  --with-zlib-dir  --with-xpm-dir  --with-webp-dir  --with-freetype-dir"
+  args:
+    executable: /bin/bash
+    creates: "/opt/phpbrew/php/php-{{php_version_latest}}/bin/php"
+    chdir: /opt/phpbrew/
+  register: php_install_result
+
+- debug:
+    msg: "Install php-{{php_version_latest}}"
+  when: php_install_result is defined and php_install_result.rc == 0

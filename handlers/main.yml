@@ -1,8 +1,16 @@
 ---
 # handlers file for php
 
-- name: reload php-fpm
+- name: php reload
   become: yes
   service:
     name: phpbrew-fpm
     state: reloaded
+
+- name: nginx reload
+  become: yes
+  service:
+    name: nginx
+    state: reloaded
+  ignore_errors: true
+

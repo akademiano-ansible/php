@@ -1,0 +1,35 @@
+---
+# tasks file for php
+
+- name: add src repos
+  become: yes
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  with_items: "{{ src_repos }}"
+
+- name: Add a postgres key  download if present
+  become: yes
+  apt_key:
+    id: B97B0AFCAA1A47F044F244A07FCC7D46ACCC4CF8
+    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    state: present
+
+- name: add additional repos
+  become: yes
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+  with_items: "{{ php_additional_repos }}"
+
+- name: prepare install php
+  become: yes
+  apt:
+    name: php
+    state: build-dep
+
+- name: install addition packages
+  become: yes
+  apt:
+    name: "{{ php_depends_packages }}"
+    state: latest

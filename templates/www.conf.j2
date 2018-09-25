@@ -12,7 +12,7 @@
 ; - 'chdir'
 ; - 'php_values'
 ; - 'php_admin_values'
-; When not set, the global prefix (or /opt/phpbrew/php/php-7.2.9) applies instead.
+; When not set, the global prefix (or /opt/phpbrew/php/php-{{php_version}}) applies instead.
 ; Note: This directive can also be relative to the global prefix.
 ; Default Value: none
 ;prefix = /path/to/pools/$pool
@@ -33,7 +33,7 @@ group = www-data
 ;                            (IPv6 and IPv4-mapped) on a specific port;
 ;   '/path/to/unix/socket' - to listen on a unix socket.
 ; Note: This value is mandatory.
-listen = /opt/phpbrew/php/php-7.2.9/var/run/php-fpm.sock
+listen = var/run/php-fpm.sock
 
 
 ; Set listen(2) backlog.
@@ -236,7 +236,7 @@ pm.max_requests = 1000
 ;       anything, but it may not be a good idea to use the .php extension or it
 ;       may conflict with a real PHP file.
 ; Default Value: not set
-;pm.status_path = /status
+pm.status_path = /fpm-status
 
 ; The ping URI to call the monitoring page of FPM. If this value is not set, no
 ; URI will be recognized as a ping page. This could be used to test from outside
@@ -248,12 +248,12 @@ pm.max_requests = 1000
 ;       anything, but it may not be a good idea to use the .php extension or it
 ;       may conflict with a real PHP file.
 ; Default Value: not set
-;ping.path = /ping
+ping.path = /fpm-ping
 
 ; This directive may be used to customize the response of a ping request. The
 ; response is formatted as text/plain with a 200 response code.
 ; Default Value: pong
-;ping.response = pong
+ping.response = pong
 
 ; The access log file
 ; Default: not set
@@ -357,7 +357,7 @@ pm.max_requests = 1000
 ; instead.
 
 ; Note: path INI options can be relative and will be expanded with the prefix
-; (pool, global or /opt/phpbrew/php/php-7.2.9)
+; (pool, global or /opt/phpbrew/php/php-{{php_version}})
 
 ; Default Value: nothing is defined by default except the values in php.ini and
 ;                specified at startup with the -d argument

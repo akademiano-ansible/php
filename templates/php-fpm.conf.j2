@@ -3,7 +3,7 @@
 ;;;;;;;;;;;;;;;;;;;;;
 
 ; All relative paths in this configuration file are relative to PHP's install
-; prefix (/opt/phpbrew/php/php-7.2.9). This prefix can be dynamically changed by using the
+; prefix (/opt/phpbrew/php/php-{{php_version}}). This prefix can be dynamically changed by using the
 ; '-p' argument from the command line.
 
 ;;;;;;;;;;;;;;;;;;
@@ -12,14 +12,14 @@
 
 [global]
 ; Pid file
-; Note: the default prefix is /opt/phpbrew/php/php-7.2.9/var
+; Note: the default prefix is /opt/phpbrew/php/php-{{php_version}}/var
 ; Default Value: none
 pid = run/php-fpm.pid
 
 ; Error log file
 ; If it's set to "syslog", log is sent to syslogd instead of being written
 ; into a local file.
-; Note: the default prefix is /opt/phpbrew/php/php-7.2.9/var
+; Note: the default prefix is /opt/phpbrew/php/php-{{php_version}}/var
 ; Default Value: log/php-fpm.log
 error_log = /var/log/php-fpm-{{php_version}}.log
 
@@ -121,5 +121,5 @@ syslog.ident = php-fpm-{{php_version}}
 ; file.
 ; Relative path can also be used. They will be prefixed by:
 ;  - the global prefix if it's been set (-p argument)
-;  - /opt/phpbrew/php/php-7.2.9 otherwise
+;  - /opt/phpbrew/php/php-{{php_version}} otherwise
 include=/opt/phpbrew/php/php-{{php_version}}/etc/php-fpm.d/*.conf
