@@ -9,3 +9,6 @@
 
 - name: php configure
   import_tasks: configure.yml
+
+- name: composer
+  import_tasks: composer.yml
