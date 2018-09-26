@@ -104,6 +104,21 @@
     enabled: yes
     state: started
 
+- shell: source /etc/profile; php -i | egrep "^extension_dir" | awk -F " => " '{print $2}'
+  args:
+    executable: /bin/bash
+  register: php_estension_dir_result
+  changed_when: false
+
+- set_fact:
+    php_extension_dir: "{{php_estension_dir_result.stdout}}"
+    cacheable: true
+
+- include_tasks: "install_extensions.yml extension_dir={{php_extension_dir}}"
+  loop: "{{php_additional_extensions}}"
+  loop_control:
+    loop_var: extension
+
 - name: Update nginx config
   become: yes
   template:
@@ -113,5 +128,12 @@
     group: root
     mode: 0644
   notify: nginx restart
+  ignore_errors: yes
  
+- name: create index for default host
+  template:
+    src: default-index.php.j2
+    dest: /var/www/default.dev/public/index.php
+  ignore_errors: yes
+  become: yes
 

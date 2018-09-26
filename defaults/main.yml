@@ -35,6 +35,9 @@ php_depends_packages:
   - postgresql-client-10
   - libpq-dev
   - ccache
+  - libmagickwand-dev
+  - libmagickcore-dev
+  - imagemagick
 
 src_repos:
   - deb-src http://archive.ubuntu.com/ubuntu/ bionic main restricted universe multiverse
@@ -46,3 +49,8 @@ php_additional_repos:
   - deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main
 
 php_version_minor: 7.2
+
+php_additional_extensions:
+  - msgpack
+  - apcu
+  - imagick
