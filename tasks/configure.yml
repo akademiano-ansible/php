@@ -6,8 +6,7 @@
   args:
     executable: /bin/bash
   register: phpbrew_current_output
-  changed_when: False
-  always_run: yes
+  changed_when: false
 
 - name: Register phpbrew fact current
   set_fact:
@@ -20,8 +19,7 @@
   args:
     executable: /bin/bash
   register: phpbrew_list_output
-  changed_when: False
-  always_run: yes
+  changed_when: false
 
 - name: Register phpbrew fact
   set_fact:
@@ -114,7 +112,9 @@
     php_extension_dir: "{{php_estension_dir_result.stdout}}"
     cacheable: true
 
-- include_tasks: "install_extensions.yml extension_dir={{php_extension_dir}}"
+- include_tasks: install_extensions.yml 
+  vars:
+    extension_dir: "{{php_extension_dir}}"
   loop: "{{php_additional_extensions}}"
   loop_control:
     loop_var: extension
@@ -136,4 +136,3 @@
     dest: /var/www/default.dev/public/index.php
   ignore_errors: yes
   become: yes
-

@@ -1,9 +1,19 @@
+---
+
 - name: create opt phpbrew dir
   become: yes
   file:
     path: /opt/phpbrew
     state: directory
     mode: 0755
+
+- stat:
+    path: /usr/local/bin/phpbrew
+    get_attributes: no
+    get_checksum: no
+    get_md5: no
+    get_mime: no
+  register: phpbrew_exist_result
 
 - name: Download phpbrew
   become: yes
@@ -12,6 +22,7 @@
     dest: /usr/local/bin/phpbrew
     mode: 0755
     force: no
+  when: not phpbrew_exist_result.stat.exists
 
 - name: Init phpbrew
   become: yes
@@ -44,7 +55,6 @@
     executable: /bin/bash
   register: phpbrew_known_result
   changed_when: False
-  always_run: yes
 
 - set_fact:
     php_version_latest: "{{phpbrew_known_result.stdout}}"
