@@ -18,3 +18,4 @@
     executable: /bin/bash
   register: composer_update_result
   changed_when: not composer_update_result.stdout is search ("You are already using composer version")
+  become: yes
