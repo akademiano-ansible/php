@@ -33,3 +33,9 @@
   apt:
     name: "{{ php_depends_packages }}"
     state: latest
+
+- name: install addition packages for extensions
+  become: yes
+  apt:
+    name: "{{ php_extensions_depends_packages }}"
+    state: latest

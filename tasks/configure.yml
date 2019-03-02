@@ -112,6 +112,17 @@
     php_extension_dir: "{{php_estension_dir_result.stdout}}"
     cacheable: true
 
+
+- shell: source /etc/profile; php -i | egrep "^Scan this dir for additional .ini files" | awk -F " => " '{print $2}'
+  args:
+    executable: /bin/bash
+  register: php_additional_config_dir_result
+  changed_when: false
+
+- set_fact:
+    php_additional_config_dir: "{{php_additional_config_dir_result.stdout}}"
+    cacheable: true
+
 - include_tasks: install_extensions.yml 
   vars:
     extension_dir: "{{php_extension_dir}}"
