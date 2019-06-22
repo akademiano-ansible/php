@@ -38,6 +38,8 @@ php_depends_packages:
   - libmagickwand-dev
   - libmagickcore-dev
   - imagemagick
+  - libgmp-dev
+  - snmp-mibs-downloader
 
 php_extensions_depends_packages: []
 
