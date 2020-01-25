@@ -1,13 +1,19 @@
 ---
 # tasks file for php
+- name: PHP | Include vars
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}-{{ ansible_distribution_major_version}}.yml"
+    - "{{ ansible_distribution }}.yml"
+  tags: vars
 
-- name: Prepare to phpbrew
-  import_tasks: preinstall.yml
+- name: PHP | Prepare Install
+  import_tasks: prepare_install.yml
 
-- name: phpbrew compile
+- name: PHP | Phpbrew | Compile
   import_tasks: compile.yml
 
-- name: php configure
+- name: PHP | Configure
   import_tasks: configure.yml
 
 - shell: source /etc/profile; phpbrew path bin;

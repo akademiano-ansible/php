@@ -13,7 +13,6 @@
     name: phpbrew-fpm
     state: restarted
 
-
 - name: nginx restart
   become: yes
   service:

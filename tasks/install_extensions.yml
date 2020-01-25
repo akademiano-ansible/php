@@ -4,7 +4,7 @@
 
 - name: "Install extensions {{extension}}"
   become: yes
-  shell: "source /etc/profile && export CCACHE_DIR=$(realpath ~/.ccache) && export PATH=/usr/lib/ccache:$PATH &&  phpbrew ext install {{extension}}"
+  shell: "source /etc/profile && CCACHE_DIR=/var/cache/ccache/ && export CCACHE_PREFIX=icecc && export PATH=/usr/lib/ccache:$PATH &&  phpbrew ext install {{extension}}"
   args:
     executable: /bin/bash
     chdir: /opt/phpbrew/
@@ -13,7 +13,7 @@
 
 - name: "Enable extensions {{extension}}"
   become: yes
-  shell: "source /etc/profile && export CCACHE_DIR=$(realpath ~/.ccache) && export PATH=/usr/lib/ccache:$PATH &&  phpbrew ext enable {{extension}}"
+  shell: "source /etc/profile && export CCACHE_DIR=/var/cache/ccache/ && export CCACHE_PREFIX=icecc && export PATH=/usr/lib/ccache:$PATH &&  phpbrew ext enable {{extension}}"
   args:
     executable: /bin/bash
     chdir: /opt/phpbrew/
